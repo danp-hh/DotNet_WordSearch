@@ -4,15 +4,17 @@ namespace WordSearch
 {
     public class WordListGenerator
     {
-        public static List<string> generate(int dimension)
+        public static string[] Generate(int dimension)
         {
-            List<string> list = new List<string>();
+            string[] list = new string[(int)Math.Pow(26, dimension)];
+            int j = 0;
 
             void AddCombinations(string currentCombination, int remainingLength)
             {
                 if(remainingLength == 0)
                 {
-                    list.Add(currentCombination);
+                    list[j] = currentCombination;
+                    j++;
                     return;
                 }
 

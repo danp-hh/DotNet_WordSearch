@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WordSearch
 {
-    public class BinarySearch
+    public class BinarySearchTree
     {
 
     }

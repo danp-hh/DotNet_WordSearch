@@ -13,9 +13,9 @@ namespace WordSortTests
 
         public void Generate_DimensionIsN_26SquaredNElements(int n)
         {
-            List<string> elements = WordListGenerator.generate(n);
+            string[] elements = WordListGenerator.Generate(n);
 
-            Assert.AreEqual(Math.Pow(26, n), elements.Count);
+            Assert.AreEqual(Math.Pow(26, n), elements.Length);
         }
 
         [TestMethod]
@@ -24,10 +24,10 @@ namespace WordSortTests
         [DataRow(5)]
         public void Shuffle_DimensionIsN_AfterShuffleFirstNSquaredNElementsAreNotTheSameAsBefore(int n)    
         {
-            List<string> elements = WordListGenerator.generate(n);
-            List<string> before_shuffling = elements.GetRange(0, (int) Math.Pow(n, n));
+            string[] elements = WordListGenerator.Generate(n);
+            List<string> before_shuffling = elements.ToList().GetRange(0, (int) Math.Pow(n, n));
             WordListGenerator.Shuffle(elements);
-            List<string> after_shuffling = elements.GetRange(0, (int) Math.Pow(n, n));
+            List<string> after_shuffling = elements.ToList().GetRange(0, (int) Math.Pow(n, n));
 
             CollectionAssert.AreNotEqual(before_shuffling, after_shuffling);
         }
