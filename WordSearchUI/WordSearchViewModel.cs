@@ -33,10 +33,8 @@ namespace WordSearchUI
 
         private async Task GenerateWordList()
         {
-            try
+            if(int.TryParse(Dimension, out int dimension))
             {
-                int dimension = int.Parse(Dimension);
-
                 IsLoading = true;
                 await Task.Run(() =>
                 {
@@ -47,29 +45,31 @@ namespace WordSearchUI
                 });
                 IsLoading = false;
             }
-            catch(Exception ex) 
-            { }
+            else
+            {
+                //Show feedback in UI
+            }
 
         }
 
         private async Task ExecuteSearchWord()
-        {
-            string[] list = WordList.ToArray();
+        { 
+            // ParallelStartsWith erzeuigt ein int , wieviele Entroes in result gefüllt wurden (none null)
+            // result hat selbe größe wie WordList
+
             string[] result = new string[(int)Math.Pow(26, int.Parse(Dimension)-SearchWord.Length)];
             double totalMilliseconds = 0;
 
             await Task.Run(() =>
             {
                 Stopwatch stopWatch = Stopwatch.StartNew();
-                WordSearch.LinearSearch.ParallelStartsWith(SearchWord, list, result);
+                WordSearch.LinearSearch.ParallelStartsWith(SearchWord, WordList, result);
                 stopWatch.Stop();
                 totalMilliseconds = stopWatch.Elapsed.TotalMilliseconds;
             });
 
             ElapsedTime = totalMilliseconds.ToString();
-
             WordList = new ObservableCollection<string>(result);
-
         }
 
         private bool _isLoading;
@@ -110,7 +110,7 @@ namespace WordSearchUI
                     WordList = new ObservableCollection<string>(OriginalList);
                 }
 
-                _searchWord = value;
+                _searchWord = value.ToUpper();
                 
                 // NotifyPropertyChanged("SearchWord");
 

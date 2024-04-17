@@ -10,4 +10,18 @@ namespace WordSearch
     {
 
     }
+
+    public class LinkedCharList
+    {
+        public readonly char Value;
+        public readonly int Depth;
+        public readonly Dictionary<char, LinkedCharList> Children;
+
+        public LinkedCharList(char value, int depth)
+        {
+            Value = value;
+            Depth = depth;
+            Children = new Dictionary<char, LinkedCharList>();
+        }
+    }
 }

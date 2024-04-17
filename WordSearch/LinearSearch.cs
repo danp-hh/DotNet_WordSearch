@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,6 @@ namespace WordSearch
 {
     public class LinearSearch : SearchAlgorithm
     {
-
         public static void Equals(string pattern, string[] list, string[] result)
         {
             int j = 0;
@@ -44,7 +44,7 @@ namespace WordSearch
 
         }
 
-        public static void StartsWith(string pattern, string[] list, string[] result)
+        public static int StartsWith(string pattern, string[] list, string[] result)
         {
             int j = 0;
 
@@ -56,29 +56,28 @@ namespace WordSearch
                     j++;
                 }
             }
+            return j;
         }
 
-        public static void ParallelStartsWith(string pattern, string[] list, string[] result)
+        public static int ParallelStartsWith(string pattern, IReadOnlyList<string> list, string[] result)
         {
-            int j = 0;
-            object _lockl = new object();
+            ConcurrentQueue<string> resultQueue = new ConcurrentQueue<string> { };
 
-            Parallel.For(0, list.Length, (i) =>
+            Parallel.For(0, list.Count, (i) =>
             {
-                if (list[i].StartsWith(pattern, StringComparison.Ordinal))
+                string entry = list[i];
+                if (entry.StartsWith(pattern, StringComparison.Ordinal))
                 {
-                    lock(_lockl) 
-                    {
-                        result[j] = list[i];
-                        j++;
-                    }
+                    resultQueue.Enqueue(entry);
                 }
             });
+            result = resultQueue.ToArray();
+            return resultQueue.Count;
         }
 
-        public override void Search(string pattern, string[] list, string[] result)
+        public override int Search(string pattern, string[] list, string[] result)
         {
-            ParallelStartsWith(pattern, list, result);
+            return ParallelStartsWith(pattern, list, result);
         }
     }
 }

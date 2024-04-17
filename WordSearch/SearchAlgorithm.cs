@@ -8,6 +8,6 @@ namespace WordSearch
 {
     public abstract class SearchAlgorithm
     {
-        public abstract void Search(string pattern, string[] list, string[] result);
+        public abstract int Search(string pattern, string[] list, string[] result);
     }
 }

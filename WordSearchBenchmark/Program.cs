@@ -10,44 +10,71 @@ namespace WordSearchBenchmark
 
         public string SearchWord_N4 = "ABC";
         public string[] Result_N4 = new string[26];
-        public string[] List_N4 = WordSearch.WordListGenerator.Generate(4).ToArray();
+        public string[] WordList = WordSearch.WordListGenerator.Generate(4).ToArray();
 
-        public string SearchWord_N3 = "AB";
-        public string[] Result_N3 = new string[26];
-        public string[] List_N3 = WordSearch.WordListGenerator.Generate(3).ToArray();
+        // TODO add 3 again
+        [Params(4)]
+        public int dimensions { get; set; }
 
-
-
-
-
-        [IterationSetup]
+        [GlobalSetup]
         public void Setup()
         {
-            WordSearch.WordListGenerator.Shuffle(List_N4);
-            WordSearch.WordListGenerator.Shuffle(List_N3);
+            WordList = WordSearch.WordListGenerator.Generate(dimensions).ToArray();
+            WordSearch.WordListGenerator.Shuffle(WordList);
         }
 
-        [Benchmark]
-        public void N4_LinearSearch() => WordSearch.LinearSearch.StartsWith(SearchWord_N4, List_N4, Result_N4);
+        //[Benchmark]
+        public int LinearSearch() => WordSearch.LinearSearch.StartsWith(SearchWord_N4, WordList, Result_N4);
 
         [Benchmark]
-        public void N4_ParallelLinearSearch() => WordSearch.LinearSearch.ParallelStartsWith(SearchWord_N4, List_N4, Result_N4);
-
-        [Benchmark]
-        public void N3_LinearSearch() => WordSearch.LinearSearch.StartsWith(SearchWord_N3 , List_N3, Result_N3);
-
-        [Benchmark]
-        public void N3_ParallelLinearSearch() => WordSearch.LinearSearch.StartsWith(SearchWord_N3, List_N3, Result_N3);
+        public void ParallelLinearSearch() => WordSearch.LinearSearch.ParallelStartsWith(SearchWord_N4, WordList, Result_N4);
 
     }
 
 
-    public class Program
+    public class WordGenerationBenchmark
+    {
+        public string[] WordList;
+
+        [Params(4)]
+        public int Length { get; set; }
+
+        [Benchmark]
+        public int GenerateRecursive()
+        {
+            WordList = WordSearch.WordListGenerator.GenerateFixedSizeStringBuilder(Length);
+            return WordList.Length;
+        }
+
+        [Benchmark]
+        public int GenerateFixedSizeStringBuilder()
+        {
+            WordList = WordSearch.WordListGenerator.GenerateFixedSizeStringBuilder(Length);
+            return WordList.Length;
+        }
+
+        [Benchmark]
+        public int GenerateFixedSizeStringSpan()
+        {
+            WordList = WordSearch.WordListGenerator.GenerateFixedSizeStringSpan(Length);
+            return WordList.Length;
+        }
+
+        [Benchmark]
+        public int GenerateForDynamicStringSpan()
+        {
+            WordList = WordSearch.WordListGenerator.GenerateForDynamic(Length);
+            return WordList.Length;
+        }
+
+    }
+
+        public class Program
     {
         
         public static void Main(string[] args)
         {
-            var summary = BenchmarkRunner.Run<WordSearchBenchmark>();
+            var summary = BenchmarkRunner.Run<WordGenerationBenchmark>();
         }
     }
 }
