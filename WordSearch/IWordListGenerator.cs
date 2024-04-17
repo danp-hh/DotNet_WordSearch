@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace WordSearch
 {
-    public interface ISearchAlgorithm
+    public interface IWordListGenerator
     {
-        public abstract int Search(string pattern, string[] list, string[] result);
+        public abstract string[] Generate(int dimension);
     }
 }

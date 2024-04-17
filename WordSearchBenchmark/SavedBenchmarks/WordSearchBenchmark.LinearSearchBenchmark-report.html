@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>WordSearchBenchmark.LinearSearchBenchmark-20240417-141743</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet v0.13.12, Windows 10 (10.0.19045.4291/22H2/2022Update)
+AMD Ryzen 5 3600, 1 CPU, 12 logical and 6 physical cores
+.NET SDK 7.0.402
+  [Host]     : .NET 7.0.12 (7.0.1223.47720), X64 RyuJIT AVX2
+  DefaultJob : .NET 7.0.12 (7.0.1223.47720), X64 RyuJIT AVX2
+</code></pre>
+<pre><code></code></pre>
+
+<table>
+<thead><tr><th>Method                       </th><th>dimensions</th><th>Mean</th><th>Error</th><th>StdDev</th>
+</tr>
+</thead><tbody><tr><td>LinearSearch</td><td>4</td><td>5.128 ms</td><td>0.1008 ms</td><td>0.1035 ms</td>
+</tr><tr><td>ParallelLinearSearch</td><td>4</td><td>1.008 ms</td><td>0.0162 ms</td><td>0.0136 ms</td>
+</tr><tr><td>ParallelLinearSearchConcurrentQueue</td><td>4</td><td>1.190 ms</td><td>0.0235 ms</td><td>0.0261 ms</td>
+</tr><tr><td>LinearSearch</td><td>5</td><td>269.339 ms</td><td>1.2448 ms</td><td>1.0395 ms</td>
+</tr><tr><td>ParallelLinearSearch</td><td>5</td><td>105.000 ms</td><td>0.4784 ms</td><td>0.4475 ms</td>
+</tr><tr><td>ParallelLinearSearchConcurrentQueue</td><td>5</td><td>106.263 ms</td><td>0.2682 ms</td><td>0.2378 ms</td>
+</tr></tbody></table>
+</body>
+</html>

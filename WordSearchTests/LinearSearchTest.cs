@@ -27,43 +27,12 @@ namespace WordSortTests
 
         private string[] InitializeWordArray(int n) 
         {
-            string[] list = WordListGenerator.Generate(n).ToArray();
+            WordListGenerator generator = new WordListGenerator();
+            string[] list = generator.Generate(n).ToArray();
             WordListGenerator.Shuffle(list);
 
             return list;
         }
-
-        [TestMethod]
-        [DataRow(2)]
-        [DataRow(4)]
-        [DataRow(5)]
-        public void Equals_DimensionIsN_WordInSearchResults(int n)
-        {
-            string word = InitializeSearchWord(n);
-            string[] list = InitializeWordArray(n);
-
-            string[] result = new string[1];
-            LinearSearch.Equals(word, list, result);
-
-            CollectionAssert.AreEqual(new List<string>() { word }, result);
-        }
-
-
-        [TestMethod]
-        [DataRow(2)]
-        [DataRow(4)]
-        [DataRow(5)]
-        public void ParallelEquals_DimensionIsN_WordInSearchResults(int n)
-        {
-            string word = InitializeSearchWord(n);
-            string[] list = InitializeWordArray(n);
-
-            string[] result = new string[1];
-            LinearSearch.ParallelEquals(word, list, result);
-
-            CollectionAssert.AreEqual(new List<string>() { word }, result);
-        }
-
 
         [TestMethod]
         [DataRow(2)]

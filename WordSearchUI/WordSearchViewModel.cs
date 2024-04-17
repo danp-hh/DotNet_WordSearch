@@ -35,10 +35,12 @@ namespace WordSearchUI
         {
             if(int.TryParse(Dimension, out int dimension))
             {
+                ErrorText = "";
                 IsLoading = true;
                 await Task.Run(() =>
                 {
-                    string[] list = WordSearch.WordListGenerator.Generate(dimension);
+                    WordSearch.WordListGenerator generator = new WordSearch.WordListGenerator();
+                    string[] list = generator.Generate(dimension);
                     WordSearch.WordListGenerator.Shuffle(list);
                     WordList = new ObservableCollection<string>(list);
                     OriginalList = new List<string>(list);
@@ -47,29 +49,31 @@ namespace WordSearchUI
             }
             else
             {
-                //Show feedback in UI
+                ErrorText = "Only Integers are allowed! [0-9]";
             }
 
         }
 
         private async Task ExecuteSearchWord()
-        { 
-            // ParallelStartsWith erzeuigt ein int , wieviele Entroes in result gefüllt wurden (none null)
-            // result hat selbe größe wie WordList
-
+        {
+            _isLoading = true;
             string[] result = new string[(int)Math.Pow(26, int.Parse(Dimension)-SearchWord.Length)];
             double totalMilliseconds = 0;
+            string[] wordListArray = WordList.ToArray();
+            int filledElementsIndex = 0;
 
             await Task.Run(() =>
             {
                 Stopwatch stopWatch = Stopwatch.StartNew();
-                WordSearch.LinearSearch.ParallelStartsWith(SearchWord, WordList, result);
+                WordSearch.ISearchAlgorithm search = new WordSearch.LinearSearch();
+                filledElementsIndex = search.Search(SearchWord, wordListArray, result);
                 stopWatch.Stop();
                 totalMilliseconds = stopWatch.Elapsed.TotalMilliseconds;
             });
 
             ElapsedTime = totalMilliseconds.ToString();
-            WordList = new ObservableCollection<string>(result);
+            WordList = new ObservableCollection<string>(result.Take(filledElementsIndex));
+            _isLoading = false;
         }
 
         private bool _isLoading;
@@ -108,15 +112,17 @@ namespace WordSearchUI
                 if(_searchWord.Length > value.Length)
                 {
                     WordList = new ObservableCollection<string>(OriginalList);
+                    ElapsedTime = "0";
                 }
 
                 _searchWord = value.ToUpper();
                 
-                // NotifyPropertyChanged("SearchWord");
-
                 string pattern = "^[A-Z]+";
-                bool isValid = Regex.IsMatch(value, pattern);
-                if (isValid)
+                bool isValid = Regex.IsMatch(_searchWord, pattern);
+
+                // only Search, when no other Search is currently running
+                // we can not set async in this setter. Can we find a better solution?
+                if (isValid && !_isLoading)
                 {
                     ExecuteSearchWord();
                 }
@@ -141,6 +147,17 @@ namespace WordSearchUI
             { 
                 _elapsedTime = value;
                 NotifyPropertyChanged("ElapsedTime");
+            }
+        }
+
+        private string _errorText;
+        public string ErrorText
+        {
+            get { return _errorText; }
+            set
+            {
+                _errorText = value;
+                NotifyPropertyChanged("ErrorText");
             }
         }
         
