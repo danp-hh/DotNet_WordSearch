@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text;
-
-namespace WordSearch
+﻿namespace WordSearch
 {
     public class WordListGenerator: IWordListGenerator
     {

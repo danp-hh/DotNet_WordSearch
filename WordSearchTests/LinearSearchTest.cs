@@ -1,10 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WordSearch;
+﻿using WordSearch;
 
 namespace WordSortTests
 {
@@ -38,15 +32,17 @@ namespace WordSortTests
         [DataRow(2)]
         [DataRow(4)]
         [DataRow(5)]
-        public void StartsWith_DimensionIsNAndWordIsNMinus1_SearchResultHas26ElementsContainingWord(int n)
+        public void StartsWith_DimensionIsNAndWordIsNMinus1_SearchResultHas26ElementsContainingPattern(int n)
         {
             string word = InitializeSearchWord(n-1);
             string[] list = InitializeWordArray(n);
 
             string[] result = new string[26];
-            LinearSearch.StartsWith(word, list, result);
+            int foundEntries = LinearSearch.StartsWith(word, list, result);
 
-            foreach(var elem in result)
+            Assert.AreEqual(26, foundEntries);
+
+            foreach(var elem in result.Take(foundEntries))
             {
                 StringAssert.Contains(elem, word);
             }
@@ -57,15 +53,17 @@ namespace WordSortTests
         [DataRow(2)]
         [DataRow(4)]
         [DataRow(5)]
-        public void ParallelStartsWith_DimensionIsNAndWordIsNMinus1_SearchResultHas26ElementsContainingWord(int n)
+        public void ParallelStartsWith_DimensionIsNAndWordIsNMinus1_SearchResultHas26ElementsContainingPattern(int n)
         {
             string word = InitializeSearchWord(n - 1);
             string[] list = InitializeWordArray(n);
 
             string[] result = new string[26];
-            LinearSearch.ParallelStartsWith(word, list, result);
+            int foundEntries = LinearSearch.ParallelStartsWith(word, list, result);
 
-            foreach(var elem in result ) 
+            Assert.AreEqual(26, foundEntries);
+
+            foreach (var elem in result.Take(foundEntries)) 
             { 
                 StringAssert.Contains(elem, word);
             }

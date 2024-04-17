@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>WordSearchBenchmark.SearchBenchmark-20240417-152933</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet v0.13.12, Windows 10 (10.0.19045.4291/22H2/2022Update)
+AMD Ryzen 5 3600, 1 CPU, 12 logical and 6 physical cores
+.NET SDK 7.0.402
+  [Host]     : .NET 7.0.12 (7.0.1223.47720), X64 RyuJIT AVX2
+  DefaultJob : .NET 7.0.12 (7.0.1223.47720), X64 RyuJIT AVX2
+</code></pre>
+<pre><code></code></pre>
+
+<table>
+<thead><tr><th>Method        </th><th>Dimension</th><th>Mean      </th><th>Error  </th><th>StdDev </th>
+</tr>
+</thead><tbody><tr><td>ParallelLinearSearch</td><td>4</td><td>1,057.29 &mu;s</td><td>19.332 &mu;s</td><td>37.246 &mu;s</td>
+</tr><tr><td>BinarySearch</td><td>4</td><td>25.29 &mu;s</td><td>0.125 &mu;s</td><td>0.111 &mu;s</td>
+</tr><tr><td>Sort</td><td>4</td><td>507,378.23 &mu;s</td><td>9,475.524 &mu;s</td><td>8,863.411 &mu;s</td>
+</tr><tr><td>ParallelLinearSearch</td><td>5</td><td>104,252.74 &mu;s</td><td>313.481 &mu;s</td><td>293.230 &mu;s</td>
+</tr><tr><td>BinarySearch</td><td>5</td><td>33.37 &mu;s</td><td>0.270 &mu;s</td><td>0.226 &mu;s</td>
+</tr><tr><td>Sort</td><td>5</td><td>30,141,129.81 &mu;s</td><td>59,446.513 &mu;s</td><td>49,640.531 &mu;s</td>
+</tr></tbody></table>
+</body>
+</html>

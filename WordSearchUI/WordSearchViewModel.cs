@@ -4,13 +4,8 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Documents;
-using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
-using System.Windows;
 using System.Text.RegularExpressions;
 
 namespace WordSearchUI
